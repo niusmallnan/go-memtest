@@ -10,8 +10,6 @@ clean:
 	git clean -dxf
 
 image: build
-	pushd package
-	cp ../bin/go-memtest .
-	docker build -t niusmallnan/go-memtest .
+	cp bin/go-memtest package/
+	cd package && docker build -t niusmallnan/go-memtest .
 	docker push niusmallnan/go-memtest
-	popd
