@@ -4,6 +4,8 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"runtime"
+	"runtime/debug"
 
 	"github.com/sirupsen/logrus"
 )
@@ -38,7 +40,9 @@ func (s *Server) ListenAndServe() error {
 	logrus.Infof("Listening on %s", s.SocketLocation)
 	server := http.Server{}
 	http.HandleFunc("/alloc", s.alloc)
-	http.HandleFunc("/status", s.stats)
+	http.HandleFunc("/stats", s.stats)
+	http.HandleFunc("/freegc", s.freegc)
+	http.HandleFunc("/freeosm", s.freeosm)
 	socketListener, err := net.Listen("unix", s.SocketLocation)
 	if err != nil {
 		return err
@@ -58,6 +62,22 @@ func (s *Server) stats(rw http.ResponseWriter, req *http.Request) {
 	logrus.Debugf("Received stats request")
 	if req.Method == http.MethodGet {
 		printMemoryStats()
+		rw.Write([]byte("OK\n"))
+	}
+}
+
+func (s *Server) freegc(rw http.ResponseWriter, req *http.Request) {
+	logrus.Debugf("Received freegc request")
+	if req.Method == http.MethodGet {
+		runtime.GC()
+		rw.Write([]byte("OK\n"))
+	}
+}
+
+func (s *Server) freeosm(rw http.ResponseWriter, req *http.Request) {
+	logrus.Debugf("Received freeosm request")
+	if req.Method == http.MethodGet {
+		debug.FreeOSMemory()
 		rw.Write([]byte("OK\n"))
 	}
 }
