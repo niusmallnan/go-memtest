@@ -4,6 +4,8 @@
 
 本程序辅助测试Golang GC策略，测试使用golang 1.4 。
 
+[![](http://img.youtube.com/vi/cWj_fyWufdk/0.jpg)](http://www.youtube.com/watch?v=cWj_fyWufdk "Golang GC Test")
+
 ### 默认MADV_FREE策略
 
 启动容器
