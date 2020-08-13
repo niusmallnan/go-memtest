@@ -19,10 +19,10 @@ func stringWithCharset(length int, charset string) string {
 	return string(b)
 }
 
-func allcateMemory() {
-	ss := stringWithCharset(32, charset)
+func allcateMemory(size int) {
+	ss := stringWithCharset(64, charset)
 
-	slice := make([]string, 512000)
+	slice := make([]string, size)
 	for i := 0; i < len(slice); i++ {
 		slice[i] = ss
 	}

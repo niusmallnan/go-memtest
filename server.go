@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"runtime/debug"
+	"strconv"
 
 	"github.com/sirupsen/logrus"
 )
@@ -53,7 +54,11 @@ func (s *Server) ListenAndServe() error {
 func (s *Server) alloc(rw http.ResponseWriter, req *http.Request) {
 	logrus.Debugf("Received alloc request")
 	if req.Method == http.MethodGet {
-		allcateMemory()
+		size, _ := strconv.Atoi(req.FormValue("size"))
+		if size <= 0 {
+			size = 1024000
+		}
+		allcateMemory(size)
 		rw.Write([]byte("OK\n"))
 	}
 }
