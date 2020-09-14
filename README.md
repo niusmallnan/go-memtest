@@ -4,9 +4,11 @@
 
 值得注意的是，如果在Kubernetes中运行Go程序，它占用的内存可能会随着时间推移越来越大，而且如果你的系统负载不高，这个内存并不会被回收。这很可能对监控和调度产生一些困扰。
 
-本程序辅助测试Golang GC策略，测试使用golang 1.14 。
+本程序辅助测试Golang GC策略，测试使用golang 1.14编译，操作系统使用Ubuntu 18.04 。
 
 [![](http://img.youtube.com/vi/cWj_fyWufdk/0.jpg)](http://www.youtube.com/watch?v=cWj_fyWufdk "Golang GC Test")
+
+注意：如果系统内核不支持MADV_FREE，Golang会自动回退使用MADV_DONTNEED，内核则在4.5版本才支持MADV_FREE特性。比如：Ubuntu 16.04的内核就无法支持MADV_FREE。
 
 ### 默认MADV_FREE策略
 
